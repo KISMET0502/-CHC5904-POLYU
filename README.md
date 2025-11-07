@@ -1,6 +1,5 @@
 # POLYU_CHC5904_Group4_FengShenYanYi_analysis
 阶段一：(A) 文本抓取与白名单创建 (已完成)
-你做了什么：
 
 文本抓取： 你使用 Python 脚本从 CText 网站抓取了《封神演义》的全部（繁体）文本，并保存为 fengshen_sentences.csv 和 fengshen_paragraphs.csv。
 
