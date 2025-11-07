@@ -1,4 +1,4 @@
-# -CHC5904-POLYU
+# -CHC5904-POLYU-Group-4
 计划总览：四阶段法
 
 阶段一 (Python - 脚本 1): 情感分析
