@@ -1,72 +1,52 @@
 # -CHC5904-POLYU-Group-4
-计划总览：四阶段法
+阶段一：(A) 文本抓取与白名单创建 (已完成)
+你做了什么：
 
-阶段一 (Python - 脚本 1): 情感分析
+文本抓取： 你使用 Python 脚本从 CText 网站抓取了《封神演义》的全部（繁体）文本，并保存为 fengshen_sentences.csv 和 fengshen_paragraphs.csv。
 
-任务： 修复 OpenCC 错误，读取繁体 CSV，转换为简体，运行情感分析。
+人物发现： 你运行了 Character_Discovery.py 脚本，利用 jieba 的词性标注功能，自动从文本中提取了所有潜在的人物名称。
 
-输出： sentiment_per_chapter.png
+手动校对： 你（作为研究者）仔细审查了这份自动生成的列表，手动清理了所有“噪音”（如地名、官职等），并保存了你最终的、权威的人物名单 CHARACTER_WHITELIST.csv。
 
-阶段二 (Python - 脚本 2): 自动人物发现
+状态： ✅ 已完成
 
-任务： 使用 jieba 的词性标注功能，从繁体文本中自动提取所有被标记为“人名”(nr)的词语。
+阶段二：(A) 统一数据分析 (已完成)
+你做了什么： 你刚刚成功运行了 Consolidated_Analysis.py 这个统一分析脚本。这个脚本为你一次性完成了两项独立的分析任务：
 
-输出： potential_characters_freq.csv (一个包含大量潜在人物和“噪音”的列表)
+情感分析： 脚本读取了繁体文本，使用 opencc 库将其转换为简体，然后利用 snownlp 库计算了每一章的平均情感得分，并为你生成了一张情感曲线图。
 
-阶段三 (手动校对): 人物白名单
+网络数据准备： 脚本使用正确的参数（utf-8 编码和 , 分隔符）读取了你的 CHARACTER_WHITELIST.csv。接着，它逐句遍历了繁体文本，计算了你名单上的人物“共同出现”在同一句话中的次数（权重）。
 
-任务： 你（研究者） 必须打开 potential_characters_freq.csv，手动清理它，删除所有“噪音”（如地名、官职、普通词汇），只保留真实的人物名称。
+状态： ✅ 已完成
 
-输出： CHARACTER_WHITELIST.txt (你项目的权威人物名单)
+你现在拥有的产出：
 
-阶段四 (Python - 脚本 3): 网络数据准备
+sentiment_per_chapter.png (情感分析图)
 
-任务： 读取你手动清理过的 CHARACTER_WHITELIST.txt，然后运行与之前相同的共现分析。
+fengshen_nodes.csv (人物节点列表)
 
-输出： fengshen_nodes.csv 和 fengshen_edges.csv (用于 Gephi)
+fengshen_edges.csv (人物关系列表)
 
-阶段五 (Gephi): 网络可视化
+阶段三：(A.2) 社交网络可视化 (已完成)
 
-上述均已完成
+你需要做什么： 将你刚刚生成的 nodes 和 edges 数据文件，转换成一张专业、直观的社交网络图。
 
-需要做的
+你需要怎么做：
 
-阶段六 (手动): GIS 数据集
+打开 Gephi 软件 (这是一个桌面应用程序)。
 
-(B) GIS 事件数据库 (手动创建)
+导入数据： 在“数据资料”标签页下，分别点击“输入电子表格”，导入你的 fengshen_nodes.csv (作为节点表格) 和 fengshen_edges.csv (作为边表格)。
 
-目标： 这是你的“B部分”（GIS）的核心，你需要手动创建一个包含地理信息的事件列表。
+运行布局： 在“概览”界面，找到左侧的“布局”窗口，选择 "ForceAtlas 2" 算法。点击“运行”，让节点自动分散和聚集，直到你对图形满意为止。
 
-打开 Excel (或 Google Sheets)。
+运行统计： 在右侧“统计”窗口，运行 "Modularity" (社区划分) 算法。这将自动计算出书中的主要“阵营”（例如，阐教 vs. 截教）。
 
-创建新表格，并包含以下英文表头 (使用英文表头能确保 StoryMaps 100% 兼容)：
+设置外观： 在左上角“外观”窗口：
 
-Chapter (章节)
+颜色 (Color)： 选择按 "Modularity Class" (社区ID) 给节点上色，这样不同阵营的人就会显示为不同颜色。
 
-Event_Name (事件名称, 如: 哪吒鬧海)
+大小 (Size)： 选择按 "Weighted Degree" (加权度) 设置节点大小，这样关系越多的核心人物（如姜子牙）就会显得越大。
 
-Location_Name (地点名称, 如: 陳塘關)
+导出图像： 切换到“预览”标签页，刷新并调整设置（如显示标签），最后将你的网络图导出为 fengshen_network.png 文件。
 
-Event_Type (事件类型, 如: 戰爭 / 法寶)
-
-Characters (涉及人物, 如: 哪吒, 敖丙)
-
-Latitude (纬度, 如: 39.084)
-
-Longitude (经度, 如: 117.761)
-
-Quote (引文, 从 out/fengshen_paragraphs.csv 中复制关键原文)
-
-填充数据：
-
-打开你抓取的 out/fengshen_paragraphs.csv 作为参考。
-
-开始阅读并填充你的 Excel 表格。
-
-查找坐标： 使用在线地图工具（如谷歌地图）查找“朝歌”（河南安阳）、“西岐”（陕西岐山）等真实地点的经纬度。对于虚构地点（如“陈塘关”），根据书中的描述（例如“靠近东海”）给它一个合理的坐标。
-
-保存文件：
-
-将你的 Excel 表格另存为 fengshen_events.csv (确保编码为 UTF-8)。
-
-阶段七 (StoryMaps): 最终整合
+状态： ✅ 已完成
